@@ -2,7 +2,7 @@ def getDatasources():
     return [
         {
             "id": "0",
-            "url": "https://gist.githubusercontent.com/juanchojbarroso/2a336960612d0bd4846c7102c695374d/raw/2bd95e5e1b77974c102a58e27c67e745c1695ddc/fraudTest.csv",
+            "url": "https://gist.githubusercontent.com/juanchojbarroso/2a336960612d0bd4846c7102c695374d/raw/80b95505e265b3555b3a3a3ccfad24a885333d9c/fraudTest.csv",
             "name": "card-fraud-test"
         },
         {
