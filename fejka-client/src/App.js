@@ -1,5 +1,5 @@
 import './App.css';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 
 
 function App() {
@@ -14,9 +14,9 @@ function App() {
 }
 
 function DatasourceSelector() {
-  
+
   const { isLoading, error, data } = useQuery('repoData', () =>
-    fetch('https://api.github.com/repos/tannerlinsley/react-query').then(res =>
+    fetch('http://127.0.0.1:8000/datasources').then(res =>
       res.json()
     )
   )
@@ -27,11 +27,7 @@ function DatasourceSelector() {
 
   return (
     <div>
-      <h1>{data.name}</h1>
-      <p>{data.description}</p>
-      <strong>👀 {data.subscribers_count}</strong>{' '}
-      <strong>✨ {data.stargazers_count}</strong>{' '}
-      <strong>🍴 {data.forks_count}</strong>
+      <h1>Select you datasource</h1>
     </div>
   )
 }
