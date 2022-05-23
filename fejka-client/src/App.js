@@ -1,36 +1,30 @@
-import './App.css';
-import { useQuery } from 'react-query'
-
+import React, { useState } from "react";
+import { Box, Text } from "@chakra-ui/react";
+import { DatasourcesSelector } from "./component";
+import "./App.css";
 
 function App() {
+  const [datasource, setDatasource] = useState({});
   return (
     <div className="App">
       <header className="App-header">
-        <DatasourceSelector />
-        Juancho
+        <Box w="100%" p={4} color="white">
+          <Text fontSize="3xl">{datasource.name}</Text>
+          <Text fontSize="xs">{datasource.url}</Text>
+        </Box>
+        <Box w="100%" p={4} color="white">
+          <DatasourcesSelector
+            onSelectChange={(datasourceSelected) => {
+              setDatasource(datasourceSelected);
+            }}
+          />
+        </Box>
+        <Box w="100%" p={4} color="white">
+            
+        </Box>
       </header>
     </div>
   );
 }
-
-function DatasourceSelector() {
-
-  const { isLoading, error, data } = useQuery('repoData', () =>
-    fetch('http://127.0.0.1:8000/datasources').then(res =>
-      res.json()
-    )
-  )
-
-  if (isLoading) return 'Loading...'
-
-  if (error) return 'An error has occurred: ' + error.message
-
-  return (
-    <div>
-      <h1>Select you datasource</h1>
-    </div>
-  )
-}
-
 
 export default App;
