@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Grid,
-  GridItem,
-  Select,
-  Stack,
-  Checkbox,
-} from "@chakra-ui/react";
+import { Grid, GridItem, Select, Stack, Checkbox } from "@chakra-ui/react";
 import {
   LineChart,
   Line,
@@ -17,12 +11,44 @@ import {
 } from "recharts";
 import { getRandomColor } from "../utils/color";
 
-
-
 export default function LineChartComponent({ data, labels = [] }) {
   const [xAxis, setXAxis] = useState(labels[0]);
   const [yAxis, setYAxis] = useState("");
-  const [linesSet, setLinesSet] = useState(["uv"]);
+  const [linesSet, setLinesSet] = useState([]);
+
+  const [checkedState, setCheckedState] = useState(
+    new Array(labels.length).fill(false)
+  );
+
+  const handleOnChange = (position) => {
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item
+    );
+
+    setCheckedState(updatedCheckedState);
+
+    let newLinesSet = linesSet;
+
+    updatedCheckedState.forEach((currentState, index) => {
+      debugger;
+      if (currentState === true) {
+        if (!newLinesSet.includes(labels[index])) {
+          return newLinesSet.push(labels[index]);
+        }
+        return;
+      }
+      return newLinesSet = arrayRemove(newLinesSet, labels[index]);
+    });
+    debugger
+    setLinesSet(newLinesSet);
+  };
+
+  function arrayRemove(arr, value) {
+    debugger;
+    return arr.filter(function (ele) {
+      return ele !== value;
+    });
+  }
 
   return (
     <Grid
@@ -30,7 +56,7 @@ export default function LineChartComponent({ data, labels = [] }) {
       templateColumns="repeat(10, 1fr)"
       gap={4}
     >
-      <GridItem colSpan={3} >
+      <GridItem colSpan={3}>
         <Select
           placeholder="Select X axis value"
           onChange={(e) => setXAxis(e.target.value)}
@@ -57,11 +83,20 @@ export default function LineChartComponent({ data, labels = [] }) {
         </Select>
         <Stack>
           {labels.map((option, index) => {
-            return <Checkbox isDisabled={false}>{option}</Checkbox>;
+            return (
+              <Checkbox
+                value={option}
+                isChecked={checkedState[index]}
+                id={`custom-checkbox-${index}`}
+                onChange={() => handleOnChange(index)}
+              >
+                {option}
+              </Checkbox>
+            );
           })}
         </Stack>
       </GridItem>
-      <GridItem colSpan={7} >
+      <GridItem colSpan={7}>
         <LineChart
           width={700}
           height={640}
