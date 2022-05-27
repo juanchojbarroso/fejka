@@ -1,4 +1,3 @@
-import { useQuery } from "react-query";
 import {
   Select,
   Alert,
@@ -6,22 +5,11 @@ import {
   AlertTitle,
   AlertDescription,
 } from "@chakra-ui/react";
-import { fetchDatasources } from "../api";
+import {  } from "../api";
 
-export default function DatasourcesSelector({ onSelectChange }) {
-  const { isLoading, error, data } = useQuery(
-    "datasourcesData",
-    fetchDatasources
-  );
+export default function DatasourcesSelector({ options, onSelectChange }) {
 
-  if (isLoading)
-    return (
-      <Select placeholder="Select option">
-        <option>Loading</option>;
-      </Select>
-    );
-
-  if (error)
+  if (!options.length)
     return (
       <>
         <Alert status="error">
@@ -39,10 +27,10 @@ export default function DatasourcesSelector({ onSelectChange }) {
       <Select
         placeholder="Select option"
         onChange={(e) =>
-          onSelectChange(data.find((item) => item.id === e.target.value))
+          onSelectChange(options.find((item) => item.id === e.target.value))
         }
       >
-        {data.map((option, index) => {
+        {options.map((option, index) => {
           return (
             <option key={index} value={option.id}>
               {option.name}

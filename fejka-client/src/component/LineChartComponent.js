@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, GridItem, Select, Stack, Checkbox } from "@chakra-ui/react";
 import {
   LineChart,
@@ -12,44 +12,11 @@ import {
 import { getRandomColor } from "../utils/color";
 
 export default function LineChartComponent({ data, labels = [] }) {
-  const [xAxis, setXAxis] = useState(labels[0]);
+  const [xAxis, setXAxis] = useState("");
   const [yAxis, setYAxis] = useState("");
   const [linesSet, setLinesSet] = useState([]);
 
-  const [checkedState, setCheckedState] = useState(
-    new Array(labels.length).fill(false)
-  );
-
-  const handleOnChange = (position) => {
-    const updatedCheckedState = checkedState.map((item, index) =>
-      index === position ? !item : item
-    );
-
-    setCheckedState(updatedCheckedState);
-
-    let newLinesSet = linesSet;
-
-    updatedCheckedState.forEach((currentState, index) => {
-      debugger;
-      if (currentState === true) {
-        if (!newLinesSet.includes(labels[index])) {
-          return newLinesSet.push(labels[index]);
-        }
-        return;
-      }
-      return newLinesSet = arrayRemove(newLinesSet, labels[index]);
-    });
-    debugger
-    setLinesSet(newLinesSet);
-  };
-
-  function arrayRemove(arr, value) {
-    debugger;
-    return arr.filter(function (ele) {
-      return ele !== value;
-    });
-  }
-
+  console.log(linesSet);
   return (
     <Grid
       templateRows="repeat(2, 1fr)"
@@ -57,43 +24,38 @@ export default function LineChartComponent({ data, labels = [] }) {
       gap={4}
     >
       <GridItem colSpan={3}>
-        <Select
-          placeholder="Select X axis value"
-          onChange={(e) => setXAxis(e.target.value)}
-        >
-          {labels.map((option, index) => {
-            return (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            );
-          })}
-        </Select>
-        <Select
-          placeholder="Select Y axis value"
-          onChange={(e) => setYAxis(e.target.value)}
-        >
-          {labels.map((option, index) => {
-            return (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            );
-          })}
-        </Select>
-        <Stack>
-          {labels.map((option, index) => {
-            return (
-              <Checkbox
-                value={option}
-                isChecked={checkedState[index]}
-                id={`custom-checkbox-${index}`}
-                onChange={() => handleOnChange(index)}
-              >
-                {option}
-              </Checkbox>
-            );
-          })}
+        <Stack spacing={4} align="center">
+          <Select
+            placeholder="Select X axis value"
+            onChange={(e) => {
+              setXAxis(e.target.value);
+            }}
+          >
+            {labels.map((option, index) => {
+              return (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              );
+            })}
+          </Select>
+          <Select
+            placeholder="Select Y axis value"
+            onChange={(e) => setYAxis(e.target.value)}
+          >
+            {labels.map((option, index) => {
+              return (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              );
+            })}
+          </Select>
+          <CustomCheckBox
+            options={labels}
+            checkedLabels={linesSet}
+            onCheckedChange={(checkedItems) => setLinesSet(checkedItems)}
+          />
         </Stack>
       </GridItem>
       <GridItem colSpan={7}>
@@ -108,16 +70,57 @@ export default function LineChartComponent({ data, labels = [] }) {
           <YAxis dataKey={yAxis} />
           <Tooltip />
           <Legend />
-          {linesSet.map((dataKey, index) => (
-            <Line
-              key={index}
-              type="monotone"
-              dataKey={dataKey}
-              stroke={getRandomColor()}
-            />
-          ))}
+          {linesSet.map((dataKey, index) => {
+            debugger;
+            return (
+              <Line
+                key={index}
+                type="monotone"
+                dataKey={dataKey}
+                stroke={getRandomColor()}
+              />
+            );
+          })}
         </LineChart>
       </GridItem>
     </Grid>
+  );
+}
+
+function CustomCheckBox({ options = [], checkedLabels = [], onCheckedChange }) {
+  const [state, setState] = useState({ selections: [] });
+
+  useEffect(() => {
+    onCheckedChange(state.selections);
+  }, [state]);
+
+  function handleCheckboxChange(key) {
+    let sel = state.selections;
+    let find = sel.indexOf(key);
+    if (find > -1) {
+      sel.splice(find, 1);
+    } else {
+      sel.push(key);
+    }
+
+    setState({
+      selections: sel,
+    });
+  }
+
+  return (
+    <Stack>
+      {options.map((option, index) => {
+        return (
+          <Checkbox
+            key={option}
+            onChange={() => handleCheckboxChange(option)}
+            isChecked={state.selections.includes(option)}
+          >
+            {option}
+          </Checkbox>
+        );
+      })}
+    </Stack>
   );
 }
