@@ -1,83 +1,55 @@
-import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { Box, Text, Container, Link } from "@chakra-ui/react";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { DatasourcesSelector, LineChartComponent } from "./component";
+import React from "react";
 import {
-  fetchDatasources,
-  fetchDatasourcesDataset,
-  fetchDatasourcesLabes,
-} from "./api";
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+  Link,
+} from "react-router-dom";
+import { Divider, Container } from "@chakra-ui/react";
+import { DatasourcesSelector, DatasourcesLink } from "./component";
+// import LineChart from "./screens/LineChart";
+import NotFound from "./screens/NotFound";
 
 import "./App.css";
 
+function Charts() {
+  return (
+    <div>
+      <nav>
+        <Link to="linechart">Invoices</Link> |
+        <Link to="linechart">Dashboard</Link>
+      </nav>
+      <Divider orientation="horizontal" />
+      <div className="content">
+        <Outlet />
+      </div>
+    </div>
+  );
+}
+
+function AppRouter() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="charts" element={<Charts />}>
+          {/* <Route path="linechart" element={<LineChart />} /> */}
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
+  );
+}
+
 function App() {
-  const [datasources, setDatasources] = useState([]);
-  const [datasource, setDatasource] = useState({});
-  const [dataset, setDataset] = useState([]);
-  const [labels, setLabels] = useState([]);
-  
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const datasources = await fetchDatasources();
-        setDatasources(datasources);
-      } catch (error) {
-        throw Error(error);
-      }
-    };
-
-    fetchData().catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const labels = await fetchDatasourcesLabes({ id: datasource.id });
-        const dataset = await fetchDatasourcesDataset({ id: datasource.id });
-        setLabels(labels);
-        setDataset(dataset);
-      } catch (error) {
-        throw Error(error);
-      }
-    };
-
-    if (!!datasource.id) {
-      setLabels([]);
-      setDataset([]);
-      fetchData().catch(console.error);
-    }
-  }, [datasource]);
-
   return (
     <div className="App">
       <header className="App-header">
-        <Container maxW="container.lg" bg="" color="">
-          <Box w="100%" p={4}>
-            {!!datasource ? (
-              <>
-                <Text fontSize="3xl">{datasource.name}</Text>
-                <Link href={datasource.url} isExternal>
-                  <Text fontSize="xs">
-                    Go to datasource
-                    <ExternalLinkIcon mx="2px" />
-                  </Text>
-                </Link>
-              </>
-            ) : null}
-          </Box>
-          <Box w="100%" p={4}>
-            <DatasourcesSelector
-              options={datasources}
-              onSelectChange={(datasourceSelected) => {
-                setDatasource(datasourceSelected);
-              }}
-            />
-          </Box>
-          <Box bg={"white"} w="100%" p={4}>
-            <LineChartComponent data={dataset} labels={labels} />
-          </Box>
+        <Container>
+          <DatasourcesSelector />
+          <DatasourcesLink />
         </Container>
+        <AppRouter />
       </header>
     </div>
   );
