@@ -2,9 +2,7 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Outlet,
-  Link,
+  Route
 } from "react-router-dom";
 import {
   Box,
@@ -16,31 +14,29 @@ import {
 } from "@chakra-ui/react";
 import { DataSetSelector, DataSetLink, DataSetKeys } from "./component";
 // import LineChart from "./screens/LineChart";
+import Charts from "./screens/Charts";
 import NotFound from "./screens/NotFound";
+import { useChartsList } from "./hooks/charts";
 
 import "./App.css";
 
-function Charts() {
-  return (
-    <>
-      <nav>
-        <Link to="linechart">Invoices</Link> |
-        <Link to="linechart">Dashboard</Link>
-      </nav>
-      <Divider orientation="horizontal" />
-      <Box>
-        <Outlet />
-      </Box>
-    </>
-  );
-}
-
 function AppRouter() {
+  const { chartsList } = useChartsList();
   return (
     <Router>
       <Routes>
         <Route path="charts" element={<Charts />}>
-          {/* <Route path="linechart" element={<LineChart />} /> */}
+          <>
+            {chartsList.map((chart, index) => {
+              return (
+                <Route
+                  key={index}
+                  path={chart.path}
+                  element={chart.component}
+                />
+              );
+            })}
+          </>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

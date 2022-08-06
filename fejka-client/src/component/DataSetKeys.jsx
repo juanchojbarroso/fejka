@@ -28,7 +28,11 @@ export default function DataSetKeys() {
     data: keys,
     status,
     refetch,
-  } = useQuery(["datasetsKeys", dataSetID], () => fetchDataSetsKeys(dataSetID));
+  } = useQuery(
+    ["datasetsKeys", dataSetID],
+    () => fetchDataSetsKeys(dataSetID),
+    { enabled: !!dataSetID }
+  );
 
   useEffect(() => {
     if (!dataSetID) {
@@ -77,9 +81,9 @@ export default function DataSetKeys() {
       <Box w={"80%"}>
         {!!"dataSet" ? (
           <>
-            {keys.map((key) => (
+            {keys.map((key, index) => (
               <>
-                <Kbd>{key}</Kbd>
+                <Kbd key={`datasetkeys-${index}`}>{key}</Kbd>
                 {"   "}
               </>
             ))}
