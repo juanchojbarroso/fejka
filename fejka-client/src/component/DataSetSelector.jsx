@@ -8,15 +8,15 @@ import {
   AlertDescription,
   Select,
 } from "@chakra-ui/react";
-import { useDataSource } from "../contexts/DataSource";
+import { useDataSet } from "../contexts/DataSet";
 import { useDataApi } from "../hooks/api";
 import {} from "@chakra-ui/react";
 
-export default function DatasourcesSelector() {
-  const { dataSource, updateDataSource } = useDataSource();
+export default function DataSetSelector() {
+  const { DataSet, updateDataSet } = useDataSet();
 
-  const [{ data: datasources, isLoading, isError }] = useDataApi(
-    `${process.env.REACT_APP_API_URL}/datasources`,
+  const [{ data: DataSet, isLoading, isError }] = useDataApi(
+    `${process.env.REACT_APP_API_URL}/DataSet`,
     []
   );
   if (isLoading) {
@@ -33,7 +33,7 @@ export default function DatasourcesSelector() {
           <AlertIcon />
           <AlertTitle>Algo fue mal..</AlertTitle>
           <AlertDescription>
-            No existen datasource para selecionar
+            No existen DataSet para selecionar
           </AlertDescription>
         </Alert>
       </>
@@ -43,15 +43,15 @@ export default function DatasourcesSelector() {
     <>
       <Box>
         <Select
-          value={dataSource?.id}
+          value={DataSet?.id}
           placeholder="Select option"
           onChange={(e) => {
-            updateDataSource(
-              datasources.find((item) => item.id === e.target.value)
+            updateDataSet(
+              DataSet.find((item) => item.id === e.target.value)
             );
           }}
         >
-          {datasources.map((option, index) => {
+          {DataSet.map((option, index) => {
             return (
               <option key={index} value={option.id}>
                 {option.name}

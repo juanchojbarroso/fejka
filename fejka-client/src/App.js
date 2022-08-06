@@ -7,7 +7,7 @@ import {
   Link,
 } from "react-router-dom";
 import { Divider, Container } from "@chakra-ui/react";
-import { DatasourcesSelector, DatasourcesLink } from "./component";
+import { DataSetSelector, DataSetLink } from "./component";
 // import LineChart from "./screens/LineChart";
 import NotFound from "./screens/NotFound";
 
@@ -46,8 +46,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Container>
-          <DatasourcesSelector />
-          <DatasourcesLink />
+          <DataSetSelector />
+          <DataSetLink />
         </Container>
         <AppRouter />
       </header>

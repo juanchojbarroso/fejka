@@ -1,18 +1,18 @@
 import React from "react";
 import { Box, Text, Link } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { useDataSource } from "../contexts/DataSource";
+import { useDataSet } from "../contexts/DataSet";
 
-export default function DatasourcesLink() {
-  const { dataSource } = useDataSource();
+export default function DataSetLink() {
+  const { DataSet } = useDataSet();
   debugger;
   return (
     <Box>
-      {!!dataSource ? (
+      {!!DataSet ? (
         <>
-          <Link href={dataSource.url} isExternal>
+          <Link href={DataSet.url} isExternal>
             <Text fontSize="xs">
-              Go to datasource
+              Go to DataSet
               <ExternalLinkIcon mx="2px" />
             </Text>
           </Link>
