@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Text, Link } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { useDataSet } from "../contexts/DataSet";
+import { useDataSet } from "../contexts/DataSets";
 
 export default function DataSetLink() {
   const { DataSet } = useDataSet();

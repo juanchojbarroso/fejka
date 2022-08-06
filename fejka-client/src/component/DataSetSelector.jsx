@@ -8,15 +8,15 @@ import {
   AlertDescription,
   Select,
 } from "@chakra-ui/react";
-import { useDataSet } from "../contexts/DataSet";
+import { useDataSet } from "../contexts/DataSets";
 import { useDataApi } from "../hooks/api";
 import {} from "@chakra-ui/react";
 
 export default function DataSetSelector() {
-  const { DataSet, updateDataSet } = useDataSet();
+  const { dataSet, updateDataSet } = useDataSet();
 
-  const [{ data: DataSet, isLoading, isError }] = useDataApi(
-    `${process.env.REACT_APP_API_URL}/DataSet`,
+  const [{ data: dataSets, isLoading, isError }] = useDataApi(
+    `${process.env.REACT_APP_API_URL}/datasources`,
     []
   );
   if (isLoading) {
@@ -43,15 +43,15 @@ export default function DataSetSelector() {
     <>
       <Box>
         <Select
-          value={DataSet?.id}
+          value={dataSet?.id}
           placeholder="Select option"
           onChange={(e) => {
             updateDataSet(
-              DataSet.find((item) => item.id === e.target.value)
+              dataSets.find((item) => item.id === e.target.value)
             );
           }}
         >
-          {DataSet.map((option, index) => {
+          {dataSets.map((option, index) => {
             return (
               <option key={index} value={option.id}>
                 {option.name}
