@@ -4,15 +4,14 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { useDataSet } from "../contexts/DataSets";
 
 export default function DataSetLink() {
-  const { DataSet } = useDataSet();
-  debugger;
+  const { dataSet } = useDataSet();
   return (
     <Box>
-      {!!DataSet ? (
+      {!!dataSet ? (
         <>
-          <Link href={DataSet.url} isExternal>
+          <Link href={dataSet.url} isExternal>
             <Text fontSize="xs">
-              Go to DataSet
+              Go to dataset
               <ExternalLinkIcon mx="2px" />
             </Text>
           </Link>
