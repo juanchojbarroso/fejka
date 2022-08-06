@@ -1,24 +1,20 @@
-function fetchDatasources() {
-  return fetch(`${process.env.REACT_APP_API_URL}/datasources`).then((res) => {
-    const result = res.json();
-    return result;
-  });
-}
+const fetchDataSets = async () => {
+  const res = await fetch(`${process.env.REACT_APP_API_URL}/datasources`);
+  return res.json();
+};
 
-function fetchDatasourcesLabes({id}) {
-  return fetch(`${process.env.REACT_APP_API_URL}/datasources/${id}/dataset/labels`).then((res) => {
-    const result = res.json();
-    return result;
-  });
-}
+const fetchDataSetsKeys = async (id) => {
+  const res = await fetch(
+    `${process.env.REACT_APP_API_URL}/datasources/${id}/dataset/labels`
+  );
+  return res.json();
+};
 
-function fetchDatasourcesDataset({id}) {
-  return fetch(`${process.env.REACT_APP_API_URL}/datasources/${id}/dataset`).then((res) => {
-    const result = res.json();
-    return result;
-  });
-}
+export { fetchDataSets, fetchDataSetsKeys };
 
-
-
-export { fetchDatasources, fetchDatasourcesDataset, fetchDatasourcesLabes};
+// function fetchDatasourcesDataset({id}) {
+//   return fetch(`${process.env.REACT_APP_API_URL}/datasources/${id}/dataset`).then((res) => {
+//     const result = res.json();
+//     return result;
+//   });
+// }

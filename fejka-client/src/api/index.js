@@ -1,1 +1,1 @@
-export {fetchDatasources, fetchDatasourcesLabes, fetchDatasourcesDataset} from './api';
+export {fetchDataSets, fetchDataSetsKeys} from './api';

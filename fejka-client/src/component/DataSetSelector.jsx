@@ -1,4 +1,5 @@
 import React from "react";
+import { useQuery } from "react-query";
 import {
   Box,
   Skeleton,
@@ -9,24 +10,19 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { useDataSet } from "../contexts/DataSets";
-import { useDataApi } from "../hooks/api";
-import {} from "@chakra-ui/react";
+import { fetchDataSets } from "../api";
 
 export default function DataSetSelector() {
   const { dataSet, updateDataSet } = useDataSet();
-
-  const [{ data: dataSets, isLoading, isError }] = useDataApi(
-    `${process.env.REACT_APP_API_URL}/datasources`,
-    []
-  );
-  if (isLoading) {
+  const { data: dataSets, status } = useQuery("datasets", fetchDataSets);
+  if (status === "loading") {
     return (
       <Box w="100%" p={4}>
         <Skeleton height="40px" />
       </Box>
     );
   }
-  if (isError) {
+  if (status === "error") {
     return (
       <>
         <Alert status="error">
@@ -41,25 +37,21 @@ export default function DataSetSelector() {
   }
   return (
     <>
-      <Box>
-        <Select
-          value={dataSet?.id}
-          placeholder="Select option"
-          onChange={(e) => {
-            updateDataSet(
-              dataSets.find((item) => item.id === e.target.value)
-            );
-          }}
-        >
-          {dataSets.map((option, index) => {
-            return (
-              <option key={index} value={option.id}>
-                {option.name}
-              </option>
-            );
-          })}
-        </Select>
-      </Box>
+      <Select
+        value={dataSet?.id}
+        placeholder="Select option"
+        onChange={(e) => {
+          updateDataSet(dataSets.find((item) => item.id === e.target.value));
+        }}
+      >
+        {dataSets.map((option, index) => {
+          return (
+            <option key={index} value={option.id}>
+              {option.name}
+            </option>
+          );
+        })}
+      </Select>
     </>
   );
 }

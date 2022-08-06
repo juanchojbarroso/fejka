@@ -71,7 +71,6 @@ export default function LineChartComponent({ data, labels = [] }) {
           <Tooltip />
           <Legend />
           {linesSet.map((dataKey, index) => {
-            debugger;
             return (
               <Line
                 key={index}
