@@ -3,7 +3,6 @@ import { useQuery } from "react-query";
 import {
   Box,
   Skeleton,
-  Text,
   Alert,
   AlertIcon,
   AlertTitle,
@@ -14,6 +13,7 @@ import {
   TagLabel,
   Flex,
 } from "@chakra-ui/react";
+import DataSetLink from "./DataSetLink";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { useDataSet } from "../contexts/DataSets";
 import { Kbd } from "@chakra-ui/react";
@@ -78,7 +78,7 @@ export default function DataSetKeys() {
           </Tag>
         </HStack>
       </Box>
-      <Box w={"80%"}>
+      <Box w={"70%"}>
         {!!"dataSet" ? (
           <>
             {keys.map((key, index) => (
@@ -89,6 +89,9 @@ export default function DataSetKeys() {
             ))}
           </>
         ) : null}
+      </Box>
+      <Box w={"10%"}>
+        <DataSetLink />
       </Box>
     </Flex>
   );

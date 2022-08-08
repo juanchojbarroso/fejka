@@ -1,10 +1,5 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
-import {
   Box,
   Divider,
   Container,
@@ -12,37 +7,11 @@ import {
   Spacer,
   Heading,
 } from "@chakra-ui/react";
+import { AppRouter } from "./routers/AppRouter";
 import { DataSetSelector, DataSetLink, DataSetKeys } from "./component";
-// import LineChart from "./screens/LineChart";
-import Charts from "./screens/Charts";
-import NotFound from "./screens/NotFound";
-import { useChartsList } from "./hooks/charts";
+import MainMenu from "./component/MainMenu";
 
 import "./App.css";
-
-function AppRouter() {
-  const { chartsList } = useChartsList();
-  return (
-    <Router>
-      <Routes>
-        <Route path="charts" element={<Charts />}>
-          <>
-            {chartsList.map((chart, index) => {
-              return (
-                <Route
-                  key={index}
-                  path={chart.path}
-                  element={chart.component}
-                />
-              );
-            })}
-          </>
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
-  );
-}
 
 function AppBar() {
   return (
@@ -56,7 +25,7 @@ function AppBar() {
       </Box>
       <Spacer />
       <Box padding="4">
-        <DataSetLink />
+        <MainMenu />
       </Box>
     </Flex>
   );
