@@ -8,7 +8,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { AppRouter } from "./routers/AppRouter";
-import { DataSetSelector, DataSetLink, DataSetKeys } from "./component";
+import { DataSetSelector, DataSetKeys } from "./component";
 import MainMenu from "./component/MainMenu";
 
 import "./App.css";
