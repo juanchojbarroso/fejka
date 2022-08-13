@@ -1,19 +1,15 @@
 import React from "react";
-import { Outlet, Link } from "react-router-dom";
-import {
-  Box,
-  Tabs,
-  Tab,
-  TabList
-} from "@chakra-ui/react";
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Box, Tabs, Tab, TabList } from "@chakra-ui/react";
 import { useChartsList } from "../hooks/charts";
 import AddNewMenu from "../component/AddNewMenu";
 
 export default function Charts() {
-  const { chartsList, addNewChart } = useChartsList();
+  const { fullChartsList, chartsList, addNewChart } = useChartsList();
+  let navigate = useNavigate();
   return (
     <Box p="4">
-      <Tabs variant="soft-rounded" colorScheme="green">
+      <Tabs variant="soft-rounded" colorScheme="gray">
         <TabList>
           {chartsList.map((chart, index) => {
             return (
@@ -24,12 +20,15 @@ export default function Charts() {
           })}
           <Tab>
             <AddNewMenu
-              items={chartsList}
-              onSelect={(chart) => addNewChart(chart)}
+              items={fullChartsList}
+              onSelect={(chart) => {
+                navigate(`${chart.path}`);
+                addNewChart(chart);
+              }}
             />
           </Tab>
         </TabList>
-        <Box>
+        <Box p="8">
           <Outlet />
         </Box>
       </Tabs>
