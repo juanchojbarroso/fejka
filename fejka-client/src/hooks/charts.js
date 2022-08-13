@@ -1,15 +1,47 @@
 import React, { useState } from "react";
+import {
+  LineChart,
+  BarChart,
+  SimplePieChart,
+  ScatterChart,
+  GeoChart,
+  HistogramChart
+} from "../component/charts";
 
 const defaultChartsList = [
   {
-    name: "one",
-    path: "one",
-    component: <p>one!</p>,
+    name: "Line",
+    path: "line",
+    component: <LineChart />
   },
   {
-    name: "two",
-    path: "two",
-    component: <p>two!</p>,
+    name: "Bar",
+    path: "bar",
+    component: <BarChart />
+  },
+];
+
+const fullChartsList = [
+  ...defaultChartsList,
+  {
+    name: "Histogram",
+    path: "histogram",
+    component: <HistogramChart />,
+  },
+  {
+    name: "Simple Pie",
+    path: "simple-pie",
+    component: <SimplePieChart />,
+  },
+  {
+    name: "Scatter",
+    path: "scatter",
+    component: <ScatterChart />,
+  },
+  {
+    name: "Geo",
+    path: "geo",
+    component: <GeoChart />,
   },
 ];
 
@@ -21,6 +53,8 @@ export function useChartsList() {
   }
 
   return {
+    defaultChartsList,
+    fullChartsList,
     chartsList,
     addNewChart,
   };
