@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { DataSetProvider } from "./contexts/DataSets";
+import theme from "./theme";
 
 const queryClient = new QueryClient();
 
@@ -14,7 +15,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <DataSetProvider>
           <BrowserRouter>
             <App />
