@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   LineChart,
   BarChart,
-  SimplePieChart,
   ScatterChart,
+  HistogramChart,
+  BoxplotsChart,
+  DensityCurveChart,
+  SankeyChart,
+  SimplePieChart,
   GeoChart,
-  HistogramChart
 } from "../component/charts";
 import { useLocalStorage } from "../hooks/local-store";
 
@@ -25,19 +28,34 @@ const defaultChartsList = [
 const fullChartsList = [
   ...defaultChartsList,
   {
+    name: "Scatter",
+    path: "scatter",
+    component: <ScatterChart />,
+  },
+  {
     name: "Histogram",
     path: "histogram",
     component: <HistogramChart />,
   },
   {
+    name: "Boxplots",
+    path: "boxplots",
+    component: <BoxplotsChart />,
+  },
+  {
+    name: "Density Curve",
+    path: "densityCurve",
+    component: <DensityCurveChart />,
+  },
+  {
+    name: "Sankey",
+    path: "sankey",
+    component: <SankeyChart />,
+  },
+  {
     name: "Simple Pie",
     path: "simple-pie",
     component: <SimplePieChart />,
-  },
-  {
-    name: "Scatter",
-    path: "scatter",
-    component: <ScatterChart />,
   },
   {
     name: "Geo",

@@ -77,6 +77,14 @@ export function LineChart() {
       />
     );
   }
+  if (isLoading) {
+    return (
+      <Info
+        heading="Loading.."
+        text="Los perezosos pueden aguantar más tiempo el aliento que los delfines"
+      />
+    );
+  }
   if (isError) {
     return <Error heading="Uppss algo fue mal." text={error} />;
   }
