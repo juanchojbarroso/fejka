@@ -24,7 +24,7 @@ import {
   transformDataToGoogleDataTable,
 } from "../../utils/value";
 
-const QUERY_NAME = "BarDatasetData";
+const CHART_NAME = "BarChart";
 const queryCache = new QueryCache({
   onError: (error) => {
     console.log(error);
@@ -49,7 +49,7 @@ export function BarChart() {
   const shouldfetchData = Boolean(axisX) && Boolean(axisY);
 
   const { data, error, isError, isLoading, refetch } = useQuery(
-    [QUERY_NAME],
+    [CHART_NAME],
     () => fetchDatasourcesDataset(dataSetID, columns),
     {
       enabled: false,
@@ -74,7 +74,7 @@ export function BarChart() {
 
   const options = {
     chart: {
-      title: `${dataSet?.name} / ${QUERY_NAME}`,
+      title: `${dataSet?.name} / ${CHART_NAME}`,
     },
     bars: !isVertical ? "vertical" : "horizontal",
     isStacked: true,
@@ -152,7 +152,7 @@ export function BarChart() {
         />
       ) : (
         <Chart
-          chartType="Bar"
+          chartType="BarChart"
           width="100%"
           height="400px"
           data={transformDataToGoogleDataTable(data)}

@@ -16,7 +16,7 @@ import {
   transformDataToGoogleDataTable,
 } from "../../utils/value";
 
-const QUERY_NAME = "LineDatasetData";
+const CHART_NAME = "LineChart";
 const queryCache = new QueryCache({
   onError: (error) => {
     console.log(error);
@@ -40,7 +40,7 @@ export function LineChart() {
   const shouldfetchData = Boolean(axisX) && Boolean(axisY);
 
   const { data, error, isError, isLoading, refetch } = useQuery(
-    [QUERY_NAME],
+    [CHART_NAME],
     () => fetchDatasourcesDataset(dataSetID, columns),
     {
       enabled: false,
@@ -65,7 +65,7 @@ export function LineChart() {
 
   const options = {
     chart: {
-      title: `${dataSet?.name} / ${QUERY_NAME}`
+      title: `${dataSet?.name} / ${CHART_NAME}`
     },
   };
 
@@ -123,7 +123,7 @@ export function LineChart() {
         />
       ) : (
         <Chart
-          chartType="Line"
+          chartType={CHART_NAME}
           width="100%"
           height="400px"
           data={transformDataToGoogleDataTable(data)}
