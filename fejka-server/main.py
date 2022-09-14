@@ -1,9 +1,17 @@
-import uvicorn
-from fastapi import FastAPI
+import pandas as pd
+from typing import Union
+from service.datasources_db import getDatasources
+from utils.transformations import transformJsonToObject
+from fastapi import FastAPI, UploadFile, Response, Path, Request
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
+import numpy as np
+import json
 
-from routers import datasources
-from internal import admin
+
+from typing import List
+from pydantic import BaseModel
+
 
 app = FastAPI()
 
@@ -21,8 +29,64 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(admin.router)
-app.include_router(datasources.router)
+
+@app.get("/datasources")
+async def datasources():
+    print(f"Get all datasource")
+    datasouces = getDatasources()
+    return datasouces
+
+
+@app.get("/datasources/{datasource_id}")
+def get_datasource(datasource_id):
+    print(f"Get datasource with id {int(datasource_id)}")
+    datasouces = getDatasources()
+    return datasouces[int(datasource_id)]
+
+
+@app.get("/datasources/{datasource_id}/dataset/labels")
+def get_dataset_labels(datasource_id):
+    print(f"Get labels in dataset for datasource with id {int(datasource_id)}")
+    datasouce = transformJsonToObject(getDatasources()[int(datasource_id)])
+    print(datasouce)
+
+    data = pd.read_csv(datasouce.url)
+    return tuple(data)
+
+
+@app.post("/datasources/file/labels")
+async def create_upload_file(file: UploadFile):
+    df = pd.read_csv(file.file)
+    file.file.close()
+    return tuple(df)
+
+
+class Item(BaseModel):
+    columns: List[str]
+
+
+@app.post("/datasources/{datasource_id}/dataset")
+async def create_item(
+    datasource_id: int,
+    item: Union[Item, None] = None,
+):
+    print(f"Get dataset for datasource with id {datasource_id}")
+    datasouce = transformJsonToObject(getDatasources()[datasource_id])
+    print("***************************")
+    print({datasouce})
+    df = pd.read_csv(datasouce.url)
+    print(df.keys())
+    if item.columns:
+        data = df[item.columns]
+    else:
+        data = df
+    return Response(data.to_json(orient="split"), media_type="application/json")
+
+
+def parse_csv(df):
+    res = df.to_json(orient="records")
+    parsed = json.loads(res)
+    return parsed
 
 
 if __name__ == "__main__":
