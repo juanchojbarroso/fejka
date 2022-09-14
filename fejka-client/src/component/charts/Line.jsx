@@ -2,26 +2,29 @@ import React, { useState, useEffect } from "react";
 import { Grid, GridItem } from "@chakra-ui/react";
 import { Chart } from "react-google-charts";
 import { useQuery } from "react-query";
-import { QueryCache } from 'react-query'
+import { QueryCache } from "react-query";
 import Info from "../Info";
 import Error from "../Error";
+import Warning from "../Warning";
 import { useDataSetKeys } from "../../hooks/dataset";
 import { useDataSet } from "../../contexts/DataSets";
 import { useSelectedKeys } from "../../contexts/SelectedKeys";
 import AxisSelector from "../AxisSelector";
 import { fetchDatasourcesDataset } from "../../api";
-import { getValueFromSelectedKeys } from "../../utils/value";
+import {
+  getValueFromSelectedKeys,
+  transformDataToGoogleDataTable,
+} from "../../utils/value";
 
-
-const QUERY_NAME = "LineDatasetData"
+const QUERY_NAME = "LineDatasetData";
 const queryCache = new QueryCache({
-  onError: error => {
-    console.log(error)
+  onError: (error) => {
+    console.log(error);
   },
-  onSuccess: data => {
-    console.log(data)
-  }
-})
+  onSuccess: (data) => {
+    console.log(data);
+  },
+});
 
 export function LineChart() {
   // GLOBAL
@@ -29,7 +32,6 @@ export function LineChart() {
   const dataSetID = dataSet?.id;
   const { data: keys } = useDataSetKeys();
   const { selectedKeys, updateSelectedKeys } = useSelectedKeys();
-
 
   // LOCAL
   const [axisX, setAxisX] = useState(null);
@@ -57,22 +59,21 @@ export function LineChart() {
   useEffect(() => {
     setAxisX(null);
     setAxisY(null);
-    updateSelectedKeys([])
-    queryCache.clear()
+    updateSelectedKeys([]);
+    queryCache.clear();
   }, [dataSet]);
 
   const options = {
     chart: {
-      title: "Box Office Earnings in First Two Weeks of Opening",
-      subtitle: "in millions of dollars (USD)",
+      title: `${dataSet?.name} / ${QUERY_NAME}`
     },
   };
 
-  if (isLoading) {
+  if (!Boolean(dataSet)) {
     return (
-      <Info
-        heading="Loading.."
-        text="Los perezosos pueden aguantar más tiempo el aliento que los delfines"
+      <Warning
+        heading="Falta lo más importante!"
+        text="Tienes que seleccionar un dataset."
       />
     );
   }
@@ -123,10 +124,4 @@ export function LineChart() {
       )}
     </>
   );
-}
-
-function transformDataToGoogleDataTable(data) {
-  const { columns, data: newData } = data;
-  const googleDataTable = [columns, ...newData];
-  return googleDataTable;
 }
