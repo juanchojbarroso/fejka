@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Skeleton,
@@ -37,7 +37,6 @@ export default function DataSetKeys() {
   const selectProps = useChakraSelectProps({
     isMulti: true,
     value: selectedKeys,
-    isMulti: true,
     onChange: updateSelectedKeys,
     tagVariant: "solid",
     options: getCurrentKeys(),
