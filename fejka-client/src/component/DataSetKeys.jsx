@@ -9,7 +9,6 @@ import {
   HStack,
   Tag,
   TagLeftIcon,
-  TagLabel,
   Flex,
 } from "@chakra-ui/react";
 import { Select, useChakraSelectProps } from "chakra-react-select";
