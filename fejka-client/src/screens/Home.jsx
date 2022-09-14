@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <Flex alignItems="center">
       <Box w="100%" h="100%">
-        <Link href={"/charts"}>
+        <Link href={"/charts/line"}>
           <Center>
             <Icon as={FcPieChart} w={20} h={20} />
             <Text

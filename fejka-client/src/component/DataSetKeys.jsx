@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useQuery } from "react-query";
 import {
   Box,
   Skeleton,
@@ -16,23 +15,15 @@ import {
 import DataSetLink from "./DataSetLink";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { useDataSet } from "../contexts/DataSets";
+import { useDataSetKeys } from "../hooks/dataset";
 import { Kbd } from "@chakra-ui/react";
-import { fetchDataSetsKeys } from "../api";
 
 export default function DataSetKeys() {
   const { dataSet } = useDataSet();
 
   const dataSetID = dataSet?.id;
 
-  const {
-    data: keys,
-    status,
-    refetch,
-  } = useQuery(
-    ["datasetsKeys", dataSetID],
-    () => fetchDataSetsKeys(dataSetID),
-    { enabled: !!dataSetID }
-  );
+  const { data: keys, status, refetch } = useDataSetKeys();
 
   useEffect(() => {
     if (!dataSetID) {

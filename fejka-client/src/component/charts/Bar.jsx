@@ -14,6 +14,11 @@ export const options = {
     title: "Company Performance",
     subtitle: "Sales, Expenses, and Profit: 2014-2017",
   },
+  bars: 'vertical',
+  isStacked: true,
+  height: 300,
+  legend: {position: 'top', maxLines: 3},
+  hAxis: {minValue: 0},
 };
 
 export function BarChart() {
@@ -24,6 +29,7 @@ export function BarChart() {
       height="400px"
       data={data}
       options={options}
+      isStacked={true}
     />
   );
 }

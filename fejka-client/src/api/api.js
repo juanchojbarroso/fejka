@@ -10,11 +10,24 @@ const fetchDataSetsKeys = async (id) => {
   return res.json();
 };
 
-export { fetchDataSets, fetchDataSetsKeys };
+const fetchDatasourcesDataset = async (id, columns = []) => {
+  try {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/datasources/${id}/dataset`,
+      {
+        method: "POST",
+        body: JSON.stringify({ columns }),
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
 
-// function fetchDatasourcesDataset({id}) {
-//   return fetch(`${process.env.REACT_APP_API_URL}/datasources/${id}/dataset`).then((res) => {
-//     const result = res.json();
-//     return result;
-//   });
-// }
+    return res.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { fetchDataSets, fetchDataSetsKeys, fetchDatasourcesDataset };
