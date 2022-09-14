@@ -5,18 +5,29 @@ import { useQuery } from "react-query";
 import Info from "../Info";
 import { useDataSetKeys } from "../../hooks/dataset";
 import { useDataSet } from "../../contexts/DataSets";
+import { useSelectedKeys } from "../../contexts/SelectedKeys";
 import AxisSelector from "../AxisSelector";
 import { fetchDatasourcesDataset } from "../../api";
+
+function getValueFromSelectedKeys(keys) {
+  if (!Boolean(keys)) {
+    return;
+  }
+  const values = keys.map((key) => key.value);
+  return values;
+}
 
 export function LineChart() {
   // GLOBAL
   const { dataSet } = useDataSet();
   const dataSetID = dataSet?.id;
   const { data: keys } = useDataSetKeys();
+  const { selectedKeys } = useSelectedKeys();
+
   // LOCAL
   const { data, error, isError, isLoading, refetch } = useQuery(
     ["datasetData"],
-    () => fetchDatasourcesDataset(dataSetID, [axisX, axisY]),
+    () => fetchDatasourcesDataset(dataSetID, columns),
     {
       enabled: false,
     }
@@ -24,17 +35,17 @@ export function LineChart() {
 
   const [axisX, setAxisX] = useState(null);
   const [axisY, setAxisY] = useState(null);
-
+  const columns = [axisX, axisY, ...getValueFromSelectedKeys(selectedKeys)]
   const shouldfetchData = Boolean(axisX) && Boolean(axisY);
 
   useEffect(() => {
     async function fetchData() {
-      refetch()
+      refetch();
     }
     if (shouldfetchData) {
       fetchData();
     }
-  }, [axisX, axisY]);
+  }, [axisX, axisY, selectedKeys]);
 
   useEffect(() => {
     setAxisX(null);
@@ -49,14 +60,19 @@ export function LineChart() {
   };
 
   if (isLoading) {
-    return <Info heading="Loading.." text="Los perezosos pueden aguantar más tiempo el aliento que los delfines"/>;
+    return (
+      <Info
+        heading="Loading.."
+        text="Los perezosos pueden aguantar más tiempo el aliento que los delfines"
+      />
+    );
   }
 
   if (isError) {
     return <Info heading="Uppss algo fue mal." text={error} />;
   }
-  console.debug(data)
-  
+  console.debug(data);
+
   return (
     <>
       <Grid templateColumns="repeat(5, 1fr)" gap={6}>
@@ -103,9 +119,8 @@ export function LineChart() {
   );
 }
 
-
 function transformDataToGoogleDataTable(data) {
-  const {columns, data: newData } = data
-  const googleDataTable = [columns, ...newData]
-  return googleDataTable
+  const { columns, data: newData } = data;
+  const googleDataTable = [columns, ...newData];
+  return googleDataTable;
 }

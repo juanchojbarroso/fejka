@@ -7,6 +7,7 @@ import {
   GeoChart,
   HistogramChart
 } from "../component/charts";
+import { useLocalStorage } from "../hooks/local-store";
 
 const defaultChartsList = [
   {
@@ -46,7 +47,7 @@ const fullChartsList = [
 ];
 
 export function useChartsList() {
-  const [chartsList, setchartsList] = useState(defaultChartsList);
+  const [chartsList, setchartsList] = useLocalStorage("ChartsList", defaultChartsList)
 
   function addNewChart(chart) {
     setchartsList([...chartsList, chart]);
