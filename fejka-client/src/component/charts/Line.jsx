@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Grid, GridItem } from "@chakra-ui/react";
 import { Chart } from "react-google-charts";
 import { useQuery } from "react-query";
+import { QueryCache } from 'react-query'
 import Info from "../Info";
 import Error from "../Error";
 import { useDataSetKeys } from "../../hooks/dataset";
@@ -11,12 +12,24 @@ import AxisSelector from "../AxisSelector";
 import { fetchDatasourcesDataset } from "../../api";
 import { getValueFromSelectedKeys } from "../../utils/value";
 
+
+const QUERY_NAME = "LineDatasetData"
+const queryCache = new QueryCache({
+  onError: error => {
+    console.log(error)
+  },
+  onSuccess: data => {
+    console.log(data)
+  }
+})
+
 export function LineChart() {
   // GLOBAL
   const { dataSet } = useDataSet();
   const dataSetID = dataSet?.id;
   const { data: keys } = useDataSetKeys();
   const { selectedKeys, updateSelectedKeys } = useSelectedKeys();
+
 
   // LOCAL
   const [axisX, setAxisX] = useState(null);
@@ -25,7 +38,7 @@ export function LineChart() {
   const shouldfetchData = Boolean(axisX) && Boolean(axisY);
 
   const { data, error, isError, isLoading, refetch } = useQuery(
-    ["datasetData"],
+    [QUERY_NAME],
     () => fetchDatasourcesDataset(dataSetID, columns),
     {
       enabled: false,
@@ -45,6 +58,7 @@ export function LineChart() {
     setAxisX(null);
     setAxisY(null);
     updateSelectedKeys([])
+    queryCache.clear()
   }, [dataSet]);
 
   const options = {
