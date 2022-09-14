@@ -3,28 +3,27 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import { Chart } from "react-google-charts";
 import { useQuery } from "react-query";
 import Info from "../Info";
+import Error from "../Error";
 import { useDataSetKeys } from "../../hooks/dataset";
 import { useDataSet } from "../../contexts/DataSets";
 import { useSelectedKeys } from "../../contexts/SelectedKeys";
 import AxisSelector from "../AxisSelector";
 import { fetchDatasourcesDataset } from "../../api";
-
-function getValueFromSelectedKeys(keys) {
-  if (!Boolean(keys)) {
-    return;
-  }
-  const values = keys.map((key) => key.value);
-  return values;
-}
+import { getValueFromSelectedKeys } from "../../utils/value";
 
 export function LineChart() {
   // GLOBAL
   const { dataSet } = useDataSet();
   const dataSetID = dataSet?.id;
   const { data: keys } = useDataSetKeys();
-  const { selectedKeys } = useSelectedKeys();
+  const { selectedKeys, updateSelectedKeys } = useSelectedKeys();
 
   // LOCAL
+  const [axisX, setAxisX] = useState(null);
+  const [axisY, setAxisY] = useState(null);
+  const columns = [axisX, axisY, ...getValueFromSelectedKeys(selectedKeys)];
+  const shouldfetchData = Boolean(axisX) && Boolean(axisY);
+
   const { data, error, isError, isLoading, refetch } = useQuery(
     ["datasetData"],
     () => fetchDatasourcesDataset(dataSetID, columns),
@@ -32,11 +31,6 @@ export function LineChart() {
       enabled: false,
     }
   );
-
-  const [axisX, setAxisX] = useState(null);
-  const [axisY, setAxisY] = useState(null);
-  const columns = [axisX, axisY, ...getValueFromSelectedKeys(selectedKeys)]
-  const shouldfetchData = Boolean(axisX) && Boolean(axisY);
 
   useEffect(() => {
     async function fetchData() {
@@ -50,6 +44,7 @@ export function LineChart() {
   useEffect(() => {
     setAxisX(null);
     setAxisY(null);
+    updateSelectedKeys([])
   }, [dataSet]);
 
   const options = {
@@ -67,12 +62,9 @@ export function LineChart() {
       />
     );
   }
-
   if (isError) {
-    return <Info heading="Uppss algo fue mal." text={error} />;
+    return <Error heading="Uppss algo fue mal." text={error} />;
   }
-  console.debug(data);
-
   return (
     <>
       <Grid templateColumns="repeat(5, 1fr)" gap={6}>
