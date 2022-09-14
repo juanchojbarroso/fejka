@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Skeleton,
@@ -12,18 +12,19 @@ import {
   TagLabel,
   Flex,
 } from "@chakra-ui/react";
+import { Select, useChakraSelectProps } from "chakra-react-select";
 import DataSetLink from "./DataSetLink";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { useDataSet } from "../contexts/DataSets";
+import { useSelectedKeys } from "../contexts/SelectedKeys";
 import { useDataSetKeys } from "../hooks/dataset";
 import { Kbd } from "@chakra-ui/react";
 
 export default function DataSetKeys() {
   const { dataSet } = useDataSet();
-
-  const dataSetID = dataSet?.id;
-
   const { data: keys, status, refetch } = useDataSetKeys();
+  const dataSetID = dataSet?.id;
+  const {selectedKeys, updateSelectedKeys} = useSelectedKeys();
 
   useEffect(() => {
     if (!dataSetID) {
@@ -33,6 +34,29 @@ export default function DataSetKeys() {
       refetch();
     };
   }, [refetch, dataSetID]);
+
+  const selectProps = useChakraSelectProps({
+    isMulti: true,
+    value: selectedKeys,
+    isMulti: true,
+    onChange: updateSelectedKeys,
+    tagVariant: "solid",
+    options: getCurrentKeys(),
+  });
+
+  function getCurrentKeys() {
+    if (!Boolean(keys)) {
+      return [];
+    }
+    const currentKey = keys.map((key, index) => {
+      return {
+        label: `${index}. ${key}`,
+        value: key,
+      };
+    });
+    
+    return currentKey;
+  }
 
   if (!dataSet) {
     return (
@@ -65,7 +89,7 @@ export default function DataSetKeys() {
         <HStack spacing={4}>
           <Tag variant="subtle" colorScheme="cyan">
             <TagLeftIcon boxSize="12px" as={InfoOutlineIcon} />
-            <TagLabel>Dataset keys</TagLabel>
+            <DataSetLink />
           </Tag>
         </HStack>
       </Box>
@@ -81,8 +105,8 @@ export default function DataSetKeys() {
           </>
         ) : null}
       </Box>
-      <Box w={"10%"}>
-        <DataSetLink />
+      <Box w={"50%"}>
+        <Select {...selectProps} />
       </Box>
     </Flex>
   );

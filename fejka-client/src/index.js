@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { DataSetProvider } from "./contexts/DataSets";
+import { SelectedKeysProvider } from "./contexts/SelectedKeys";
 import theme from "./theme";
 
 const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
@@ -29,9 +30,11 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
         <DataSetProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <SelectedKeysProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </SelectedKeysProvider>
         </DataSetProvider>
       </ChakraProvider>
     </QueryClientProvider>

@@ -4,7 +4,7 @@ import { useLocalStorage } from "../hooks/local-store";
 const DataSetContext = React.createContext()
 
 export const DataSetProvider = ({ children }) => {
-  const [dataSet, setDataSet] = useLocalStorage(null)
+  const [dataSet, setDataSet] = useLocalStorage("DataSet", null)
 
   return (
     <DataSetContext.Provider value={{ dataSet, updateDataSet: setDataSet }}>
