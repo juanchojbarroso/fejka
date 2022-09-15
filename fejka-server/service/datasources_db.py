@@ -14,5 +14,10 @@ def getDatasources():
             "id": "2",
             "url": "https://raw.githubusercontent.com/ajmonfue/adm-visualizacion-datos-iii/master/assets/data/analisis_data_o_hora_del_dia.csv",
             "name": "Gourmet supermarkets"
+        },
+        {
+            "id": "4",
+            "url": "https://raw.githubusercontent.com/juanchojbarroso/fejka/master/datasets/creditcard_data.csv",
+            "name": "PCA credict card"
         }
     ]
