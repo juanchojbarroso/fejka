@@ -63,7 +63,6 @@ async def create_upload_file(file: UploadFile):
 
 class Item(BaseModel):
     columns: List[str]
-    groupby: str
 
 
 @app.post("/datasources/{datasource_id}/dataset")
@@ -76,10 +75,9 @@ async def create_item(
     print("***************************")
     print({datasouce})
     df = pd.read_csv(datasouce.url)
-    df_groupby = df.groupby([item.columns])[item.groupby].count()
-    print(df_groupby.keys())
+    print(df.keys())
     if item.columns:
-        data = df_groupby[item.columns]
+        data = df[item.columns]
     else:
         data = df
     return Response(data.to_json(orient="split"), media_type="application/json")
