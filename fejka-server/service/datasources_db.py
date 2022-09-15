@@ -9,5 +9,10 @@ def getDatasources():
             "id": "1",
             "url": "https://gist.githubusercontent.com/curran/a08a1080b88344b0c8a7/raw/0e7a9b0a5d22642a06d3d5b9bcbad9890c8ee534/iris.csv",
             "name": "iris"
+        },
+        {
+            "id": "2",
+            "url": "https://raw.githubusercontent.com/ajmonfue/adm-visualizacion-datos-iii/master/assets/data/analisis_data_o_hora_del_dia.csv",
+            "name": "Gourmet supermarkets"
         }
     ]
