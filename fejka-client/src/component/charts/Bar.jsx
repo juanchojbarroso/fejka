@@ -152,7 +152,7 @@ export function BarChart() {
         />
       ) : (
         <Chart
-          chartType="BarChart"
+          chartType="Bar"
           width="100%"
           height="400px"
           data={transformDataToGoogleDataTable(data)}
