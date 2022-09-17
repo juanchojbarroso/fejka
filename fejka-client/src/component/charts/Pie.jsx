@@ -11,9 +11,6 @@ import { useDataSet } from "../../contexts/DataSets";
 import { useSelectedKeys } from "../../contexts/SelectedKeys";
 import AxisSelector from "../AxisSelector";
 import { fetchDatasourcesDataset } from "../../api";
-import {
-  transformDataToGoogleDataTable,
-} from "../../utils/value";
 
 const CHART_NAME = "PieChart";
 const queryCache = new QueryCache({
@@ -125,7 +122,7 @@ export function SimplePieChart() {
           chartType={CHART_NAME}
           width="100%"
           height="400px"
-          data={transformDataToGoogleDataTable(data)}
+          data={data}
           options={options}
         />
       )}

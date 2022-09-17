@@ -7,6 +7,7 @@ export function getValueFromSelectedKeys(keys) {
 }
 
 export function transformDataToGoogleDataTable(data) {
+  debugger
   const { columns, data: newData } = data;
   const googleDataTable = [columns, ...newData];
   return googleDataTable;

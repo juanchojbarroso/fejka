@@ -11,10 +11,6 @@ import { useDataSet } from "../../contexts/DataSets";
 import { useSelectedKeys } from "../../contexts/SelectedKeys";
 import AxisSelector from "../AxisSelector";
 import { fetchDatasourcesDataset } from "../../api";
-import {
-  getValueFromSelectedKeys,
-  transformDataToGoogleDataTable,
-} from "../../utils/value";
 
 const CHART_NAME = "SankeyChart";
 const queryCache = new QueryCache({
@@ -139,7 +135,7 @@ export function SankeyChart() {
           chartType={"Sankey"}
           width="100%"
           height="400px"
-          data={transformDataToGoogleDataTable(data)}
+          data={data}
           options={options}
         />
       )}

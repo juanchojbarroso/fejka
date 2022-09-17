@@ -13,7 +13,6 @@ import AxisSelector from "../AxisSelector";
 import { fetchDatasourcesDataset } from "../../api";
 import {
   getValueFromSelectedKeys,
-  transformDataToGoogleDataTable,
 } from "../../utils/value";
 
 const CHART_NAME = "GeoChart";
@@ -133,7 +132,7 @@ export function GeoChart() {
           chartType={CHART_NAME}
           width="100%"
           height="400px"
-          data={transformDataToGoogleDataTable(data)}
+          data={data}
         />
       )}
     </>

@@ -24,5 +24,10 @@ def getDatasources():
             "id": "4",
             "url": "https://raw.githubusercontent.com/juanchojbarroso/fejka/develop/datasets/country_wise_latest.csv",
             "name": "Covid"
+        },
+        {
+            "id": "5",
+            "url": "https://raw.githubusercontent.com/juanchojbarroso/fejka/develop/datasets/BankChurners.csv",
+            "name": "BankChurners"
         }
     ]

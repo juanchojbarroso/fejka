@@ -33,6 +33,7 @@ const fetchDatasourcesDataset = async (id, columns = [], isEdaModo) => {
     });
     const response =  res.json()
     const data = await response
+    debugger
     if (isEdaModo) {
       return transformDataTableToGoogleDataTable(data)
     }
