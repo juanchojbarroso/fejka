@@ -16,8 +16,13 @@ def getDatasources():
             "name": "Gourmet supermarkets"
         },
         {
-            "id": "4",
+            "id": "3",
             "url": "https://raw.githubusercontent.com/juanchojbarroso/fejka/master/datasets/creditcard_data.csv",
             "name": "PCA credict card"
+        },
+        {
+            "id": "4",
+            "url": "https://raw.githubusercontent.com/juanchojbarroso/fejka/develop/datasets/country_wise_latest.csv",
+            "name": "Covid"
         }
     ]

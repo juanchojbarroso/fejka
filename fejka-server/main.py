@@ -63,6 +63,8 @@ async def create_upload_file(file: UploadFile):
 
 class Item(BaseModel):
     columns: List[str]
+    target: str
+    feature: str
 
 
 @app.post("/datasources/{datasource_id}/dataset")
@@ -75,6 +77,12 @@ async def create_item(
     print("***************************")
     print({datasouce})
     df = pd.read_csv(datasouce.url)
+
+    df.shape
+    pd.set_option("display.max.columns", None)
+    pd.set_option("display.precision", 2)
+    df.tail()
+
     print(df.keys())
     if item.columns:
         data = df[item.columns]
@@ -83,10 +91,50 @@ async def create_item(
     return Response(data.to_json(orient="split"), media_type="application/json")
 
 
-def parse_csv(df):
-    res = df.to_json(orient="records")
-    parsed = json.loads(res)
-    return parsed
+@app.post("/datasources/{datasource_id}/dataset/count")
+async def create_item(
+    datasource_id: int,
+    item: Union[Item, None] = None
+):
+    print(f"Get describe dataset for datasource with id {datasource_id}")
+    datasouce = transformJsonToObject(getDatasources()[datasource_id])
+    print("***************************")
+    print({datasouce})
+    df = pd.read_csv(datasouce.url)
+
+    df.shape
+    pd.set_option("display.max.columns", None)
+    pd.set_option("display.precision", 2)
+    df.tail()
+
+    if item.columns:
+        data = df[item.columns]
+    else:
+        data = df
+
+    data = data[item.target].value_counts()
+
+    return Response(data.to_json(orient="split"), media_type="application/json")
+
+
+@app.post("/datasources/{datasource_id}/dataset/countBy")
+async def create_item(
+    datasource_id: int,
+    item: Union[Item, None] = None
+):
+    print(f"Get describe dataset for datasource with id {datasource_id}")
+    datasouce = transformJsonToObject(getDatasources()[datasource_id])
+    print("***************************")
+    print({datasouce})
+    df = pd.read_csv(datasouce.url)
+
+    df.shape
+    pd.set_option("display.max.columns", None)
+    pd.set_option("display.precision", 2)
+    df.tail()
+    
+    data = df.groupby(item.target)[item.feature].value_counts().unstack().fillna(0)
+    return Response(data.to_json(orient="table"), media_type="application/json")
 
 
 if __name__ == "__main__":

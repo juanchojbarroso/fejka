@@ -7,6 +7,7 @@ import {
   Center,
   FormLabel,
   Switch,
+  Checkbox
 } from "@chakra-ui/react";
 import { Chart } from "react-google-charts";
 import { useQuery } from "react-query";
@@ -19,10 +20,7 @@ import { useDataSet } from "../../contexts/DataSets";
 import { useSelectedKeys } from "../../contexts/SelectedKeys";
 import AxisSelector from "../AxisSelector";
 import { fetchDatasourcesDataset } from "../../api";
-import {
-  getValueFromSelectedKeys,
-  transformDataToGoogleDataTable,
-} from "../../utils/value";
+import { getValueFromSelectedKeys } from "../../utils/value";
 
 const CHART_NAME = "BarChart";
 const queryCache = new QueryCache({
@@ -42,6 +40,7 @@ export function BarChart() {
   const { selectedKeys, updateSelectedKeys } = useSelectedKeys();
 
   // LOCAL
+  const [edaModo, setEdaModo] = useState(true);
   const [axisX, setAxisX] = useState(null);
   const [axisY, setAxisY] = useState(null);
   const [isVertical, setIsvertical] = useState(false);
@@ -50,7 +49,7 @@ export function BarChart() {
 
   const { data, error, isError, isLoading, refetch } = useQuery(
     [CHART_NAME],
-    () => fetchDatasourcesDataset(dataSetID, columns),
+    () => fetchDatasourcesDataset(dataSetID, columns, edaModo),
     {
       enabled: false,
     }
@@ -129,6 +128,11 @@ export function BarChart() {
             keys={keys}
           />
         </GridItem>
+        <GridItem w="50%" h="10">
+          <Checkbox isChecked={edaModo} onChange={() => setEdaModo(!edaModo)}>
+            EDA
+          </Checkbox>
+        </GridItem>
         <GridItem w="100%" h="10" colEnd={6}>
           <Flex>
             <Center w="220px">
@@ -155,7 +159,7 @@ export function BarChart() {
           chartType="Bar"
           width="100%"
           height="400px"
-          data={transformDataToGoogleDataTable(data)}
+          data={data}
           options={options}
           isStacked={true}
         />
